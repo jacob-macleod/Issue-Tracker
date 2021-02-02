@@ -53,12 +53,24 @@ def index():
     issue_names_length = csv_length
     return render_template('index.html', issue_names=issue_names, issue_names_length=issue_names_length, issue_tags=issue_tags)  
 
-@app.route("/issue")
+@app.route("/issue", methods = ['post', 'get'])
 def issue () :
-    issue_name = request.cookies.get("issue"))
+    tags = ""
+    desc = ""
+
+    issue_name = request.cookies.get("issue")
     
     #Search the csv to find the relavant data for the issue with issue_name
-    return "In progress... please check back later"
+    with open('data.csv', 'r') as csv_file:
+        reader = csv.reader(csv_file)
+
+        for row in reader:
+            if row[0] == issue_name :
+                desc = row[1]
+                tags = row[2]
+
+
+    return render_template("issue.html", title=issue_name, desc=desc, tags=tags)
 
 @app.route('/create_issue', methods = ['post', 'get'])
 def create_issue () :
