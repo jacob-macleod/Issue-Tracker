@@ -5,6 +5,21 @@ import os
 
 app = Flask(__name__)
 
+def remove_first_and_last_characters (string) :
+        #Remove the first and last characters (') of string - convert it to an array first
+        string = list(string)
+        string_stripped = ""
+
+        #Reconstruct the array back into a string, not using the first and last characters
+        for i in range (0, len(string)) :
+            if i == 0 or i == len(string)-1 :
+                pass
+            else :
+                string_stripped = string_stripped + string[i]
+        
+        return string_stripped
+
+
 #Delete specific line number from csv
 def delete_line(original_file, line_number):
     is_skipped = False
@@ -59,13 +74,13 @@ def issue () :
     desc = ""
 
     issue_name = request.cookies.get("issue")
-    
-    #Search the csv to find the relavant data for the issue with issue_name
+    #Remove first and last characters (')
+    issue_name = remove_first_and_last_characters(issue_name)
+
     with open('data.csv', 'r') as csv_file:
         reader = csv.reader(csv_file)
-
         for row in reader:
-            if row[0] == issue_name :
+            if row[0] == issue_name:
                 desc = row[1]
                 tags = row[2]
 
@@ -91,7 +106,6 @@ def create_issue () :
 
 @app.route("/delete_issue", methods = ["post", "get"])
 def delete_issue () :
-    csv_arr = [[]]
     index = 0
 
     if request.method == "POST" :
