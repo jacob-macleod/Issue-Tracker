@@ -1,0 +1,56 @@
+<html>
+<header>
+<title>This is title</title></header>
+<body>
+    <h2>Issue Tracker</h2>
+    <a href="http://localhost:5000/create_issue">Create Issue</a>
+    <a href="http://localhost:5000/delete_issue">Delete Issue</a>
+    <div style="border:1px solid black;"></div>
+
+</body>
+
+<script> 
+function create_cookie(data) {
+    document.cookie = "issue='" + data + "'";
+}
+
+function display_issue (names, tags) {
+    var issue_names = names
+
+    //Split issue_names into an array
+    var issue_names_arr = issue_names.split("%");
+    issue_names_length = {{ issue_names_length }}
+
+    var issue_tags = tags
+    //Split issue_tags into an array
+    issue_tags = issue_tags.split("%")
+
+    for (i=0; i<issue_names_length; i++) {
+        index = i
+        //Create a tag element
+        var tag = document.createElement("a");
+        tag.innerHTML = issue_names_arr[i];
+        tag.getAttribute("href");
+        tag.setAttribute('href', 'http://localhost:5000/issue');
+        tag.setAttribute('onclick', "create_cookie(this.innerHTML);")
+
+        //Create the tags
+        var tags = document.createElement("p");
+        //TODO: Make flask control the tags
+        tags.innerHTML = issue_tags[i];
+
+        //Create a newline element
+        var br = document.createElement("br");
+
+        //Add all the elements
+        document.body.appendChild(br)
+        document.body.appendChild(tag);
+        document.body.appendChild(tags)
+    }
+}
+
+display_issue("{{issue_names}}", "{{issue_tags}}")
+
+
+</script>
+</html>
