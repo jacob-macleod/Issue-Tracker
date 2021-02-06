@@ -74,6 +74,9 @@ def issue () :
     desc = ""
 
     issue_name = request.cookies.get("issue")
+    #Remove '<span' from issue_name
+    issue_name = issue_name.split('<')[0] + "'"
+
     #Remove first and last characters (')
     issue_name = remove_first_and_last_characters(issue_name)
 
