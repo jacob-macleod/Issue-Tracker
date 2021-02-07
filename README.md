@@ -19,4 +19,6 @@ Then you can run it with `docker run -p 5000:5000 jacobmacleod/jacob`, then navi
 
 Alternatively, you can clone the master branch with `git clone --single-branch --branch master https://github.com/jacob-macleod/Issue-Tracker.git`, then run `main.py` with `python3 main.py`. You will need to install python 3 and flask for the code and git for the clone command - if you have installed pip3, you can install flask with `pip3 install flask`.
 
+You can then navigate to http://localhost:5000/.
+
 *This is not the reccomended option, but it is necessary for active development*
