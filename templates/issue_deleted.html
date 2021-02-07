@@ -1,9 +1,126 @@
 <html>
 <header><title>Create Issue</title></header>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        background-color: #f0f0f3;
+    }
+
+    .grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    padding: 10px;
+    }
+
+    .seperator {
+        position: absolute;
+    width: 11px;
+    height: 100vh;
+    left: 25vh;
+    top: 0px;
+
+    background: #F0F0F3;
+    opacity: 0.5;
+    box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3), -1px -1px 2px rgba(185, 185, 187, 0.5), inset -5px 5px 10px rgba(185, 185, 187, 0.2), inset 5px -5px 10px rgba(185, 185, 187, 0.2), inset -5px -5px 10px rgba(255, 255, 255, 0.9), inset 5px 5px 13px rgba(185, 185, 187, 0.9);
+    grid-column-start: 3;
+    grid-column-end: 4;
+    }
+
+    .issue_panel {
+    grid-column-start: 2;
+    grid-column-end: 15;
+    }
+
+    .app_name {
+        position: absolute;
+        width: 175px;
+        height: 33.73px;
+        left: 16px;
+        top: 16px;
+        padding: 10px;
+
+        /* Neu-basic-white */
+
+        background: #F0F0F3;
+        box-shadow: -10px -10px 30px #FFFFFF, 10px 10px 30px rgba(174, 174, 192, 0.4);
+        border-radius: 98px;
+    }
+
+    .app_name_text {
+        top: 26px;
+        text-align: right;
+        padding-top: 10px;
+        padding-left: 25px;
+
+        font-family: Rubik;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 14px;
+        display: flex;
+        align-items: center;
+
+        /* text-primary */
+
+        color: #728AB7;
+    }
+
+    .create_issue_image {
+        padding-top: 7vh;
+        width: 20vh;
+        cursor: pointer;
+    }
+
+    .delete_issue_image {
+        padding-top: 1vh;
+        width: 20vh;
+        cursor: pointer;
+    }
+
+    .view_issue_image {
+        padding-top: 1vh;
+        width: 20vh;
+        cursor: pointer;
+    }
+
+    .confirmation_message {
+        font-family: Rubik;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 100%;
+        /* or 12px */
+
+        letter-spacing: 0.02em;
+
+        color: #728AB7;
+    }
+
+    .back_button_image {
+        width: 20vh;
+        cursor: pointer;
+    }
+</style>
 <body>
-    <h2>Issue Tracker</h2>
-    <div style="border:1px solid black;"></div>
-    <h3>Thank you, your issue has been deleted</h3>
-    <a href="http://localhost:5000/">Go back</a>
+    <div class="grid-container">
+        <div class="panel_items">
+            <div class="app_name">
+                <div class="app_name_text">Issue Tracker</div>
+            </div> 
+            <img src="{{url_for('static', filename='create_issue_img.png')}}" class="create_issue_image" onclick="window.open('http://localhost:5000/create_issue','_self')">
+            <br>
+            <img src="{{url_for('static', filename='delete_issue_img.png')}}" class="delete_issue_image" onclick="window.open('http://localhost:5000/delete_issue','_self')">
+            <br>
+            <img src="{{url_for('static', filename='view_issue_img.png')}}" class="view_issue_image" onclick="alert('Please click on an issue first to view it!')">
+        </div>
+        <div class="seperator">
+        </div>
+        <div class="issue_panel">    
+            <p class="confirmation_message">Thank you, your issue has been deleted</p>
+            <img src="{{url_for('static', filename='back_button_img.png')}}" class="back_button_image" onclick="window.open('http://localhost:5000/', 'self')">
+        </div>    
+    </div>
 </body>
 </html>

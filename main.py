@@ -102,7 +102,7 @@ def create_issue () :
 
        #Save input to file
        file = open("data.csv", 'a')
-       file.write(title + ", " + desc + ", " + tags + "\n")
+       file.write("\n" + title + ", " + desc + ", " + tags)
        return render_template("issue_created.html")
 
     return render_template("create_issue.html")
