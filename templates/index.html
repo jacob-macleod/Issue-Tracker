@@ -3,14 +3,27 @@
 <title>Issue Tracker</title></header>
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;500&display=swap" rel="stylesheet">
+
 <style>
-    body {
+body {
     background-color: #f0f0f3;
+}
+
+  #panel {
+    float: left;
+    width: 50%;
+    padding: 10px;
+  }
+
+    /* Clear floats after the columns */
+    #issue_pane_id:after {
+    content: "";
+    display: table;
+    clear: both;
   }
 
   #issue_div {
     height: 24px;
-
     background: #F0F0F3;
     box-shadow: -1px -1px 3px #FFFFFF, 1.5px 1.5px 3px rgba(174, 174, 192, 0.4);
     border-radius: 5px;
@@ -23,9 +36,7 @@
     font-size: 15px;
     line-height: 100%;
 
-    /*padding-top: 10px;
-    padding-bottom: 5px;
-    padding-left: 5px;*/
+    padding-left: 8px;
     box-sizing: border-box;
 
     letter-spacing: 0.01em;
@@ -35,12 +46,101 @@
     color: #C590EF;
   }
 
+  .grid-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  padding: 10px;
+}
+
+.seperator {
+    position: absolute;
+width: 11px;
+height: 100vh;
+left: 25vh;
+top: 0px;
+
+background: #F0F0F3;
+opacity: 0.5;
+box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3), -1px -1px 2px rgba(185, 185, 187, 0.5), inset -5px 5px 10px rgba(185, 185, 187, 0.2), inset 5px -5px 10px rgba(185, 185, 187, 0.2), inset -5px -5px 10px rgba(255, 255, 255, 0.9), inset 5px 5px 13px rgba(185, 185, 187, 0.9);
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
+
+.issue_panel {
+  grid-column-start: 2;
+  grid-column-end: 15;
+}
+
+.app_name {
+    position: absolute;
+    width: 175px;
+    height: 33.73px;
+    left: 16px;
+    top: 16px;
+    padding: 10px;
+
+    /* Neu-basic-white */
+
+    background: #F0F0F3;
+    box-shadow: -10px -10px 30px #FFFFFF, 10px 10px 30px rgba(174, 174, 192, 0.4);
+    border-radius: 98px;
+}
+
+.app_name_text {
+    top: 26px;
+    text-align: right;
+    padding-top: 10px;
+    padding-left: 25px;
+
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 14px;
+    display: flex;
+    align-items: center;
+
+    /* text-primary */
+
+    color: #728AB7;
+}
+
+.create_issue_image {
+    padding-top: 7vh;
+    width: 20vh;
+    cursor: pointer;
+}
+
+.delete_issue_image {
+    padding-top: 1vh;
+    width: 20vh;
+    cursor: pointer;
+}
+
+.view_issue_image {
+    padding-top: 1vh;
+    width: 20vh;
+    cursor: pointer;
+}
 </style>
 <body>
-    <h2>Issue Tracker</h2>
-    <a href="http://localhost:5000/create_issue">Create Issue</a>
-    <a href="http://localhost:5000/delete_issue">Delete Issue</a>
-    <div style="border:1px solid black;"></div>
+    <div class="grid-container">
+        <div class="panel_items">
+            <div class="app_name">
+                <div class="app_name_text">Issue Tracker</div>
+            </div> 
+            <img src="{{url_for('static', filename='create_issue_img.png')}}" class="create_issue_image" onclick="window.open('http://localhost:5000/create_issue','_self')">
+            <br>
+            <img src="{{url_for('static', filename='delete_issue_img.png')}}" class="delete_issue_image" onclick="window.open('http://localhost:5000/delete_issue','_self')">
+            <br>
+            <img src="{{url_for('static', filename='view_issue_img.png')}}" class="view_issue_image" onclick="alert('Please click on an issue first to view it!')">
+        </div>
+        <div class="seperator">
+        </div>
+        <div class="issue_panel" id="issue_pane_id"></div>    
+    </div>
+
+
 
 </body>
 
@@ -87,9 +187,11 @@ function display_issue (names, tags) {
         //Create a newline element
         var br = document.createElement("br");
 
+        issue_pane = document.getElementById("issue_pane_id")
+
         //Add all the elements
-        document.body.appendChild(br);
-        document.body.appendChild(div)
+        issue_pane.appendChild(br);
+        issue_pane.appendChild(div)
         div.appendChild(tag);
         tag.appendChild(span)
     }

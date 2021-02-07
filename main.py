@@ -66,6 +66,7 @@ def index():
             issue_tags = issue_tags + row[2] + "%"
 
     issue_names_length = csv_length
+    #TODO: CHANGE TEMPLATE RETURNED LATER!
     return render_template('index.html', issue_names=issue_names, issue_names_length=issue_names_length, issue_tags=issue_tags)  
 
 @app.route("/issue", methods = ['post', 'get'])
