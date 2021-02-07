@@ -11,7 +11,7 @@ I'm focusing on adding more advanced features like comments and milestones
 
 Issue-Tracker is avaliable from docker, which you can install from https://www.docker.com/products/docker-desktop. You can pull the docker image with: `docker pull jacobmacleod/jacob`
 
-Then you can run it with `sudo docker run -p 5000:5000 jacobmacleod/jacob`, then navigate to http://localhost:5000/. Please note that you may need to run these commands as sudo!
+Then you can run it with `docker run -p 5000:5000 jacobmacleod/jacob`, then navigate to http://localhost:5000/. Please note that you may need to run these commands as sudo!
 
 *This is the reccomended option*
 
