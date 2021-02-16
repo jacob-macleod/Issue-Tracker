@@ -177,7 +177,7 @@
             <br>
             <p class="issue_tags">{{ tags }}</p>
             <br>
-            <p>{{ notes }}</p>
+            <div id="note_container"></div>
             <form method="post"> 
                 <label for="note"></label> 
                 <input type="text" id="note" name="note_name" placeholder="Please write a note here - you'll need to reload the page to see it!"> 
@@ -185,4 +185,15 @@
             <img src="{{url_for('static', filename='back_button_img.png')}}" class="back_button_image" onclick="window.open('http://localhost:5000/', 'self')">
         </div>   
 </body>
+<script>
+notes = "{{ notes }}"
+notes = notes.split("newlineToken")
+
+note_container = document.getElementById(note_container)
+for (let i = 0; i < notes.length; i++) {
+    var note_item = document.createElement('p');
+    note_item.textContent = notes[i]
+    document.getElementById("note_container").appendChild(note_item)
+}
+</script>
 </html>

@@ -33,7 +33,7 @@ def add_comment(original_file, line_number, comment):
             else:
                 #For the comment collum, write the data it already has plus comment
                 split_line = line.split(',')
-                write_obj.write(split_line[0] + ',' + split_line[1] + ',' + split_line[2] + ',' + split_line[3].split("\n")[0] + "<br>" + comment + "\n")
+                write_obj.write(split_line[0] + ',' + split_line[1] + ',' + split_line[2] + ',' + split_line[3].split("\n")[0] + "newlineToken" + comment + "\n")
             current_index = current_index + 1
                         
 
@@ -116,19 +116,12 @@ def issue () :
             else :
                 line_in_csv_of_issue_clicked = line_in_csv_of_issue_clicked + 1
 
-    #Replace  "<br>" in notes with "\n"
-    notes = notes.split("<br>")
-    newline_notes = ""
-    for i in range (0, len(notes)) :
-        newline_notes = newline_notes + notes[i] + "\n"
-    newline_notes = str(newline_notes)
-    print (newline_notes)
 
     if request.method == "POST": 
         # getting input
         note = request.form.get("note_name") 
         add_comment("data.csv", line_in_csv_of_issue_clicked, note)
-        return render_template("issue.html", title=issue_name, desc=desc, tags=tags, notes=str(newline_notes))
+        return render_template("issue.html", title=issue_name, desc=desc, tags=tags, notes=notes)
 
 
     return render_template("issue.html", title=issue_name, desc=desc, tags=tags, notes=notes)
