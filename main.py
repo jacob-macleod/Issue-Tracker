@@ -71,6 +71,8 @@ def index():
 
 @app.route("/issue", methods = ['post', 'get'])
 def issue () :
+    line_in_csv_of_issue_clicked = 0
+    row_count = 0
     tags = ""
     desc = ""
 
@@ -84,9 +86,25 @@ def issue () :
     with open('data.csv', 'r') as csv_file:
         reader = csv.reader(csv_file)
         for row in reader:
+            line_in_csv_of_issue_clicked = line_in_csv_of_issue_clicked + 1
             if row[0] == issue_name:
                 desc = row[1]
                 tags = row[2]
+                break
+
+    #TODO: Change to add note to correct csv[3]
+    if request.method == "POST": 
+        # getting input
+        note = request.form.get("note_name") 
+        
+        #Find the currently clicked row in the csv
+        with open('data.csv', 'r') as csv_file:
+                reader = csv.reader(csv_file)
+                for row in reader:
+                    row_count = row_count + 1
+                    if row_count == line_in_csv_of_issue_clicked:
+                        #TODO: Update later
+                        print ("correct line found")
 
 
     return render_template("issue.html", title=issue_name, desc=desc, tags=tags)
@@ -99,10 +117,10 @@ def create_issue () :
        title = request.form.get("title") 
        desc = request.form.get("desc")  
        tags = request.form.get("tags")  
-
+ 
        #Save input to file
        file = open("data.csv", 'a')
-       file.write("\n" + title + ", " + desc + ", " + tags)
+       file.write(title + ", " + desc + ", " + tags + ", Notes:\n")
        return render_template("issue_created.html")
 
     return render_template("create_issue.html")
@@ -123,8 +141,10 @@ def delete_issue () :
                 if row[0] == title :
                     line_to_deleted = index
                 index = index + 1
-
-            delete_line("data.csv", line_to_deleted)
+            try :
+                delete_line("data.csv", line_to_deleted)
+            except:
+                return "Sorry, that issue does not exist!"
         return render_template("issue_deleted.html")
         
     return render_template("delete_issue.html")

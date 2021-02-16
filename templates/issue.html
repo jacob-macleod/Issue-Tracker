@@ -177,6 +177,10 @@
             <br>
             <p class="issue_tags">{{ tags }}</p>
             <br>
+            <form method="post"> 
+                <label for="note"></label> 
+                <input type="text" id="note" name="note_name" placeholder="Please write a note here"> 
+            <br>
             <img src="{{url_for('static', filename='back_button_img.png')}}" class="back_button_image" onclick="window.open('http://localhost:5000/', 'self')">
         </div>   
 </body>
