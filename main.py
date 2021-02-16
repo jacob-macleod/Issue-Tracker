@@ -20,6 +20,28 @@ def remove_first_and_last_characters (string) :
         return string_stripped
 
 
+def add_comment(original_file, line_number, comment):
+    current_index = 0
+    dummy_file = original_file + '.bak'
+    # Open the origional and dummy files
+    with open(original_file, 'r') as read_obj, open(dummy_file, 'w') as write_obj:
+        # Copy every line in the origional file to the dumy file
+        for line in read_obj:
+            # If current line number matches the given line number then skip
+            if current_index != line_number:
+                write_obj.write(line)
+            else:
+                #For the comment collum, write the data it already has plus comment
+                split_line = line.split(',')
+                write_obj.write(split_line[0] + ',' + split_line[1] + ',' + split_line[2] + ',' + split_line[3].split("\n")[0] + "<br>" + comment + "\n")
+            current_index = current_index + 1
+                        
+
+    #Rename dummy file as the origional file then delete the dummy file
+    os.remove(original_file)
+    os.rename(dummy_file, original_file)
+
+
 #Delete specific line number from csv
 def delete_line(original_file, line_number):
     is_skipped = False
@@ -75,6 +97,7 @@ def issue () :
     row_count = 0
     tags = ""
     desc = ""
+    notes = ""
 
     issue_name = request.cookies.get("issue")
     #Remove '<span' from issue_name
@@ -86,28 +109,29 @@ def issue () :
     with open('data.csv', 'r') as csv_file:
         reader = csv.reader(csv_file)
         for row in reader:
-            line_in_csv_of_issue_clicked = line_in_csv_of_issue_clicked + 1
             if row[0] == issue_name:
                 desc = row[1]
                 tags = row[2]
-                break
+                notes = row[3]
+            else :
+                line_in_csv_of_issue_clicked = line_in_csv_of_issue_clicked + 1
 
-    #TODO: Change to add note to correct csv[3]
+    #Replace  "<br>" in notes with "\n"
+    notes = notes.split("<br>")
+    newline_notes = ""
+    for i in range (0, len(notes)) :
+        newline_notes = newline_notes + notes[i] + "\n"
+    newline_notes = str(newline_notes)
+    print (newline_notes)
+
     if request.method == "POST": 
         # getting input
         note = request.form.get("note_name") 
-        
-        #Find the currently clicked row in the csv
-        with open('data.csv', 'r') as csv_file:
-                reader = csv.reader(csv_file)
-                for row in reader:
-                    row_count = row_count + 1
-                    if row_count == line_in_csv_of_issue_clicked:
-                        #TODO: Update later
-                        print ("correct line found")
+        add_comment("data.csv", line_in_csv_of_issue_clicked, note)
+        return render_template("issue.html", title=issue_name, desc=desc, tags=tags, notes=str(newline_notes))
 
 
-    return render_template("issue.html", title=issue_name, desc=desc, tags=tags)
+    return render_template("issue.html", title=issue_name, desc=desc, tags=tags, notes=notes)
 
 @app.route('/create_issue', methods = ['post', 'get'])
 def create_issue () :
