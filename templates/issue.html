@@ -112,47 +112,87 @@
         border-radius: 98px;
 }
 
-.issue_description {
-    position: absolute;
+    .issue_description {
+        position: absolute;
 
-    font-family: Rubik;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 14px;
-    display: flex;
-    align-items: center;
+        font-family: Rubik;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 14px;
+        display: flex;
+        align-items: center;
 
-    /* text-primary */
+        /* text-primary */
 
-    color: #728AB7;
-}
+        color: #728AB7;
+    }
 
-.issue_tags {
-    font-family: Rubik;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 100%;
-    /* identical to box height, or 10px */
+    .issue_tags {
+        font-family: Rubik;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 100%;
+        /* identical to box height, or 10px */
 
-    letter-spacing: 0.01em;
+        letter-spacing: 0.01em;
 
-    color: #898989;
-}
+        color: #898989;
+    }
 
-.back_button_image {
-        width: 20vh;
-        cursor: pointer;
+    .back_button_image {
+            width: 20vh;
+            cursor: pointer;
+    }
+
+    .outer_div {
+        height: 3vh;
+        width: 40vh;
+
+        /* Neu-basic-white */
+
+        background: #F0F0F3;
+        box-shadow: -1px -1px 3px #FFFFFF, 1.5px 1.5px 3px rgba(174, 174, 192, 0.4);
+        border-radius: 12px;
+    }
+
+    .inner_div {
+        height: 3vh;
+        width: 40vh;
+
+        /* Nue-basic-white-2 */
+
+        background: #EEEEEE;
+        box-shadow: inset -1px -1px 1px rgba(255, 255, 255, 0.7), inset 1px 1px 2px rgba(174, 174, 192, 0.2);
+        border-radius: 12px;
+    }
+
+    .label {
+        border: none !important;
+        background: #F0F0F3;
+        width: 39vh;
+        margin-top: 5px;
+        margin-left: 5px;
+
+        font-family: Rubik;
+        font-style: italic;
+        font-weight: 300;
+        font-size: 14px;
+        line-height: 100%;
+
+        /* or 12px */
+
+        letter-spacing: 0.02em;
+
+        color: #030303;
+    }
+
+    .note_item {
+        width: 40vh;
     }
 </style>
 <body>
-    <!--<h2>Issue Tracker</h2>
-    <div style="border:1px solid black;"></div>
-    <header>{{ title }}</header>
-    <p>{{ desc }}</p>
-    <p>{{ tags }}</p>
-    <a href="http://localhost:5000/">Back</a>-->
     <div class="grid-container">
         <div class="panel_items">
             <div class="app_name">
@@ -179,8 +219,11 @@
             <br>
             <div id="note_container"></div>
             <form method="post"> 
-                <label for="note"></label> 
-                <input type="text" id="note" name="note_name" placeholder="Please write a note here - you'll need to reload the page to see it!"> 
+                <div class="outer_div">
+                    <div class="inner_div">
+                        <input type="text" id="note" name="note_name" class="label" placeholder="Please write a note here then click the back button!"> 
+                    </div>
+                </div>
             <br>
             <img src="{{url_for('static', filename='back_button_img.png')}}" class="back_button_image" onclick="window.open('http://localhost:5000/', 'self')">
         </div>   
@@ -193,6 +236,7 @@ note_container = document.getElementById(note_container)
 for (let i = 0; i < notes.length; i++) {
     var note_item = document.createElement('p');
     note_item.textContent = notes[i]
+    note_item.classList.add("note_item")
     document.getElementById("note_container").appendChild(note_item)
 }
 </script>
