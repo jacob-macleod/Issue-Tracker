@@ -114,21 +114,26 @@
 
     .issue_description {
         position: absolute;
+        width: 39vh;
 
         font-family: Rubik;
         font-style: normal;
-        font-weight: 500;
-        font-size: 20px;
-        line-height: 14px;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 12px;
+        /* identical to box height */
+
         display: flex;
         align-items: center;
 
-        /* text-primary */
+        /* Gray 1 */
 
-        color: #728AB7;
+        color: #333333;
     }
 
     .issue_tags {
+        position: absolute;
+
         font-family: Rubik;
         font-style: normal;
         font-weight: normal;
@@ -138,7 +143,7 @@
 
         letter-spacing: 0.01em;
 
-        color: #898989;
+        color: #FB7575;
     }
 
     .back_button_image {
@@ -189,7 +194,19 @@
     }
 
     .note_item {
+        position: absolute;
         width: 40vh;
+
+        font-family: Rubik;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 100%;
+        /* or 10px */
+
+        letter-spacing: 0.01em;
+
+        color: #696969;
     }
 </style>
 <body>
@@ -211,13 +228,16 @@
             <br>
             <br>
             <br>
+            <p class="issue_tags">{{ tags }}</p>
+            <br>
+            <br>
             <br>
             <div class="issue_description">{{ desc }}</div>
             <br>
-            <br>
-            <p class="issue_tags">{{ tags }}</p>
-            <br>
             <div id="note_container"></div>
+            <br>
+            <br>
+            <br>
             <form method="post"> 
                 <div class="outer_div">
                     <div class="inner_div">
