@@ -33,7 +33,7 @@ def add_comment(original_file, line_number, comment):
             else:
                 #For the comment collum, write the data it already has plus comment
                 split_line = line.split(',')
-                write_obj.write(split_line[0] + ',' + split_line[1] + ',' + split_line[2] + ',' + split_line[3].split("\n")[0] + "newlineToken" + comment + ',' + split_line[4])
+                write_obj.write(split_line[0] + ',' + split_line[1] + ',' + split_line[2] + ',' + split_line[3].split("\n")[0] + "newlineToken" + comment + ',' + split_line[4] + "," + split_line[5])
             current_index = current_index + 1
                         
 
@@ -54,9 +54,24 @@ def add_person(original_file, line_number, name):
             else:
                 #For the comment collum, write the data it already has plus comment
                 split_line = line.split(',')
-                write_obj.write(split_line[0] + ',' + split_line[1] + ',' + split_line[2] + ',' + split_line[3] + ',' + split_line[4].split("\n")[0] + name + "newlineToken" + "\n")
+                write_obj.write(split_line[0] + ',' + split_line[1] + ',' + split_line[2] + ',' + split_line[3] + ',' + split_line[4].split("\n")[0] + name + "newlineToken" + "," + split_line[5] + "\n")
             current_index = current_index + 1
                         
+def change_issue_status(original_file, line_number, status):
+    current_index = 0
+    dummy_file = original_file + '.bak'
+    # Open the origional and dummy files
+    with open(original_file, 'r') as read_obj, open(dummy_file, 'w') as write_obj:
+        # Copy every line in the origional file to the dumy file
+        for line in read_obj:
+            # If current line number matches the given line number then skip
+            if current_index != line_number:
+                write_obj.write(line)
+            else:
+                #For the comment collum, write the data it already has plus comment
+                split_line = line.split(',')
+                write_obj.write(split_line[0] + ',' + split_line[1] + ',' + split_line[2] + ',' + split_line[3] + ',' + split_line[4] + "," + status + "\n")
+            current_index = current_index + 1
 
     #Rename dummy file as the origional file then delete the dummy file
     os.remove(original_file)
@@ -88,6 +103,7 @@ def delete_line(original_file, line_number):
 
 
 @app.route('/', methods = ['post', 'get'])
+#TODO: Add a seperate page that you can click onto to show closed issues - closed issues do not show by default - so like a "View Closed" button
 def index():
     issue_names = ""
     issue_tags = ""
@@ -98,17 +114,46 @@ def index():
         reader = csv.reader(csv_file)
 
         for row in reader:
-            #Append the name of the issue in the csv file to the issue_names string
-            issue_names = issue_names + row[0] + "%"
+            #If the issue is still open
+            if row[5] != "Close" :
+                #Append the name of the issue in the csv file to the issue_names string
+                issue_names = issue_names + row[0] + "%"
 
-            #Count the numbers of rows cycled through to find the number of lines in the csv
-            csv_length = csv_length + 1
+                #Count the numbers of rows cycled through to find the number of lines in the csv
+                csv_length = csv_length + 1
 
-            #Append the text of the tags to a variable
-            issue_tags = issue_tags + row[2] + "%"
+                #Append the text of the tags to a variable
+                issue_tags = issue_tags + row[2] + "%"
 
     issue_names_length = csv_length
     return render_template('index.html', issue_names=issue_names, issue_names_length=issue_names_length, issue_tags=issue_tags)  
+
+
+@app.route('/closed', methods = ['post', 'get'])
+#TODO: Add a seperate page that you can click onto to show closed issues - closed issues do not show by default - so like a "View Closed" button
+def closed():
+    issue_names = ""
+    issue_tags = ""
+    csv_length = 0
+
+    #Read the data.csv file
+    with open('data.csv', 'r') as csv_file:
+        reader = csv.reader(csv_file)
+
+        for row in reader:
+            #If the issue is not open
+            if row[5] != "Open" :
+                #Append the name of the issue in the csv file to the issue_names string
+                issue_names = issue_names + row[0] + "%"
+
+                #Count the numbers of rows cycled through to find the number of lines in the csv
+                csv_length = csv_length + 1
+
+                #Append the text of the tags to a variable
+                issue_tags = issue_tags + row[2] + "%"
+
+    issue_names_length = csv_length
+    return render_template('closed_issues.html', issue_names=issue_names, issue_names_length=issue_names_length, issue_tags=issue_tags)
 
 @app.route("/issue", methods = ['post', 'get'])
 def issue () :
@@ -120,6 +165,7 @@ def issue () :
 
     issue_name = request.cookies.get("issue")
     person = request.cookies.get("person").split("'")[1]
+    issue_status = request.cookies.get("issue_status")
 
     #Remove '<span' from issue_name
     issue_name = issue_name.split('<')[0] + "'"
@@ -135,22 +181,25 @@ def issue () :
                 tags = row[2]
                 notes = row[3]
                 people = row[4]
+                status = row[5]
             else :
                 line_in_csv_of_issue_clicked = line_in_csv_of_issue_clicked + 1
 
     if person != "%noneValue%" :
         add_person("data.csv", line_in_csv_of_issue_clicked, person)
-    else :
-        pass
+
+
+    if issue_status != "%noneValue%" :
+        change_issue_status("data.csv", line_in_csv_of_issue_clicked, issue_status)
 
     if request.method == "POST": 
         # getting input
         note = request.form.get("note_name") 
         add_comment("data.csv", line_in_csv_of_issue_clicked, note)
-        return render_template("issue.html", title=issue_name, desc=desc, tags=tags, notes=notes, people=people)
+        return render_template("issue.html", title=issue_name, desc=desc, tags=tags, notes=notes, people=people, status=status)
 
 
-    return render_template("issue.html", title=issue_name, desc=desc, tags=tags, notes=notes, people=people)
+    return render_template("issue.html", title=issue_name, desc=desc, tags=tags, notes=notes, people=people, status=status)
 
 @app.route('/create_issue', methods = ['post', 'get'])
 def create_issue () :

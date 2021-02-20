@@ -254,20 +254,48 @@
             <img src="{{url_for('static', filename='back_button_img.png')}}" class="back_button_image" onclick="window.open('http://localhost:5000/', 'self')">
             </div>
             <div class="issue_settings">
+                <div id="people_container"></div>
+                <br>
                 <div class="outer_div">
                     <div class="inner_div">
                         <input type="text" id="person" name="person_name" class="label" placeholder="Please type someone's name then click the back button!"> 
                     </div>
                 </div>
-                <div id="people_container"></div>
-                <br>
                 <br>
                 <button onclick="assign_person()">Assign</button>
+                <br>
+                <!--TODO: Make it say close issue or open issue based on whether the issue is open or closed, same with function-->
+                <button id="issue_status_button" onclick="change_issue_status()"></button> 
             </div>
         </div>   
 </body>
 <script>
+//Passed from flask
+notes = "{{ notes }}"
+people = "{{ people }}"
+status = "{{ status }}"
+
 document.cookie = "person='%noneValue%'"
+document.cookie = "issue_status=%noneValue%"
+
+if (status=="Close") {
+    issue_status_button.innerHTML = "Open Issue"
+} else {
+    issue_status_button.innerHTML = "Close Issue"
+}
+
+issue_status_button = document.getElementById("issue_status_button").innerHTML
+
+
+function change_issue_status() {
+    alert("You'll need to reload the page to see any changes!")
+    if (issue_status_button=="Open Issue") {
+        document.cookie = "issue_status=Open"
+    } else {
+    document.cookie = "issue_status=Close";
+    }
+    window.open('http://localhost:5000/issue','_self')
+}
 
 function assign_person() {
     person = document.getElementById("person").value
@@ -275,9 +303,6 @@ function assign_person() {
     window.open('http://localhost:5000/issue','_self')
 }
 
-//Passed from flask
-notes = "{{ notes }}"
-people = "{{ people }}"
 
 notes = notes.split("newlineToken")
 people = people.split("newlineToken")
