@@ -9,7 +9,7 @@
 
     .grid-container {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto auto;
     padding: 10px;
     }
 
@@ -29,7 +29,7 @@
 
     .issue_panel {
     grid-column-start: 2;
-    grid-column-end: 15;
+    grid-column-end: 10;
     }
 
     .app_name {
@@ -208,6 +208,11 @@
 
         color: #696969;
     }
+
+    .issue_settings {
+        grid-column-start: 10;
+        grid-column-end: 20;
+    }
 </style>
 <body>
     <div class="grid-container">
@@ -244,20 +249,59 @@
                         <input type="text" id="note" name="note_name" class="label" placeholder="Please write a note here then click the back button!"> 
                     </div>
                 </div>
+            </form>
             <br>
             <img src="{{url_for('static', filename='back_button_img.png')}}" class="back_button_image" onclick="window.open('http://localhost:5000/', 'self')">
+            </div>
+            <div class="issue_settings">
+                <div class="outer_div">
+                    <div class="inner_div">
+                        <input type="text" id="person" name="person_name" class="label" placeholder="Please type someone's name then click the back button!"> 
+                    </div>
+                </div>
+                <div id="people_container"></div>
+                <br>
+                <br>
+                <button onclick="assign_person()">Assign</button>
+            </div>
         </div>   
 </body>
 <script>
+document.cookie = "person='%noneValue%'"
+
+function assign_person() {
+    person = document.getElementById("person").value
+    document.cookie = "person='" + person + "'";
+    window.open('http://localhost:5000/issue','_self')
+}
+
+//Passed from flask
 notes = "{{ notes }}"
+people = "{{ people }}"
+
 notes = notes.split("newlineToken")
+people = people.split("newlineToken")
 
 note_container = document.getElementById(note_container)
 for (let i = 0; i < notes.length; i++) {
     var note_item = document.createElement('p');
     note_item.textContent = notes[i]
     note_item.classList.add("note_item")
+    var line_break = document.createElement('br');
     document.getElementById("note_container").appendChild(note_item)
+    document.getElementById("note_container").appendChild(line_break)
 }
+
+for (let i = 0; i < people.length; i++) {
+    if (people[i] != "") {
+        var person = document.createElement('p');
+        person.textContent = people[i]
+        person.classList.add("note_item")
+        var line_break = document.createElement('br');
+        document.getElementById("people_container").appendChild(person)
+        document.getElementById("people_container").appendChild(line_break)
+    }
+}
+
 </script>
 </html>

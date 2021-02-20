@@ -33,7 +33,7 @@ def add_comment(original_file, line_number, comment):
             else:
                 #For the comment collum, write the data it already has plus comment
                 split_line = line.split(',')
-                write_obj.write(split_line[0] + ',' + split_line[1] + ',' + split_line[2] + ',' + split_line[3].split("\n")[0] + "newlineToken" + comment + "\n")
+                write_obj.write(split_line[0] + ',' + split_line[1] + ',' + split_line[2] + ',' + split_line[3].split("\n")[0] + "newlineToken" + comment + ',' + split_line[4])
             current_index = current_index + 1
                         
 
@@ -41,6 +41,26 @@ def add_comment(original_file, line_number, comment):
     os.remove(original_file)
     os.rename(dummy_file, original_file)
 
+def add_person(original_file, line_number, name):
+    current_index = 0
+    dummy_file = original_file + '.bak'
+    # Open the origional and dummy files
+    with open(original_file, 'r') as read_obj, open(dummy_file, 'w') as write_obj:
+        # Copy every line in the origional file to the dumy file
+        for line in read_obj:
+            # If current line number matches the given line number then skip
+            if current_index != line_number:
+                write_obj.write(line)
+            else:
+                #For the comment collum, write the data it already has plus comment
+                split_line = line.split(',')
+                write_obj.write(split_line[0] + ',' + split_line[1] + ',' + split_line[2] + ',' + split_line[3] + ',' + split_line[4].split("\n")[0] + name + "newlineToken" + "\n")
+            current_index = current_index + 1
+                        
+
+    #Rename dummy file as the origional file then delete the dummy file
+    os.remove(original_file)
+    os.rename(dummy_file, original_file)
 
 #Delete specific line number from csv
 def delete_line(original_file, line_number):
@@ -88,7 +108,6 @@ def index():
             issue_tags = issue_tags + row[2] + "%"
 
     issue_names_length = csv_length
-    #TODO: CHANGE TEMPLATE RETURNED LATER!
     return render_template('index.html', issue_names=issue_names, issue_names_length=issue_names_length, issue_tags=issue_tags)  
 
 @app.route("/issue", methods = ['post', 'get'])
@@ -100,6 +119,8 @@ def issue () :
     notes = ""
 
     issue_name = request.cookies.get("issue")
+    person = request.cookies.get("person").split("'")[1]
+
     #Remove '<span' from issue_name
     issue_name = issue_name.split('<')[0] + "'"
 
@@ -113,18 +134,23 @@ def issue () :
                 desc = row[1]
                 tags = row[2]
                 notes = row[3]
+                people = row[4]
             else :
                 line_in_csv_of_issue_clicked = line_in_csv_of_issue_clicked + 1
 
+    if person != "%noneValue%" :
+        add_person("data.csv", line_in_csv_of_issue_clicked, person)
+    else :
+        pass
 
     if request.method == "POST": 
         # getting input
         note = request.form.get("note_name") 
         add_comment("data.csv", line_in_csv_of_issue_clicked, note)
-        return render_template("issue.html", title=issue_name, desc=desc, tags=tags, notes=notes)
+        return render_template("issue.html", title=issue_name, desc=desc, tags=tags, notes=notes, people=people)
 
 
-    return render_template("issue.html", title=issue_name, desc=desc, tags=tags, notes=notes)
+    return render_template("issue.html", title=issue_name, desc=desc, tags=tags, notes=notes, people=people)
 
 @app.route('/create_issue', methods = ['post', 'get'])
 def create_issue () :
