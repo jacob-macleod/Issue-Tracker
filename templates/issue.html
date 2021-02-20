@@ -213,6 +213,34 @@
         grid-column-start: 10;
         grid-column-end: 20;
     }
+
+    .assign_button {
+        width: 20vh;
+        cursor: pointer;
+    }
+
+
+    .issue_status_button {
+        width: 4vh;
+        cursor: pointer;
+        float: left;
+    }
+
+    .issue_status_text {
+        text-align: right;
+
+        font-family: Rubik;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 14px;
+        display: flex;
+        float: left;
+
+        /* text-primary */
+
+        color: #728AB7;
+    }
 </style>
 <body>
     <div class="grid-container">
@@ -262,10 +290,13 @@
                     </div>
                 </div>
                 <br>
-                <button onclick="assign_person()">Assign</button>
+                <img src="{{url_for('static', filename='AssignPerson.png')}}" class="assign_button" onclick="assign_person()">
+                <!--<button onclick="assign_person()">Assign</button>-->
                 <br>
-                <!--TODO: Make it say close issue or open issue based on whether the issue is open or closed, same with function-->
-                <button id="issue_status_button" onclick="change_issue_status()"></button> 
+                <br>
+                <img src="{{url_for('static', filename='OpenCloseIssue.png')}}" class="issue_status_button" onclick="change_issue_status()">
+                <p class="issue_status_text" id="issue_status_button"></p>
+                <!--<button id="issue_status_button" onclick="change_issue_status()"></button> -->
             </div>
         </div>   
 </body>
