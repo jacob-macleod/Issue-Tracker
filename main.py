@@ -52,10 +52,15 @@ def add_person(original_file, line_number, name):
             if current_index != line_number:
                 write_obj.write(line)
             else:
-                #For the comment collum, write the data it already has plus comment
+                #For the person collum, write the data it already has plus comment
                 split_line = line.split(',')
-                write_obj.write(split_line[0] + ',' + split_line[1] + ',' + split_line[2] + ',' + split_line[3] + ',' + split_line[4].split("\n")[0] + name + "newlineToken" + "," + split_line[5] + "\n")
+                new_line = split_line[0] + ',' + split_line[1] + ',' + split_line[2] + ',' + split_line[3] + ',' + split_line[4] + name + "newlineToken" + "," + split_line[5]
+                write_obj.write(new_line)
             current_index = current_index + 1
+
+    #Rename dummy file as the origional file then delete the dummy file
+    os.remove(original_file)
+    os.rename(dummy_file, original_file)
                         
 def change_issue_status(original_file, line_number, status):
     current_index = 0
@@ -68,7 +73,7 @@ def change_issue_status(original_file, line_number, status):
             if current_index != line_number:
                 write_obj.write(line)
             else:
-                #For the comment collum, write the data it already has plus comment
+                #For the issue collum, write the data it already has plus comment
                 split_line = line.split(',')
                 write_obj.write(split_line[0] + ',' + split_line[1] + ',' + split_line[2] + ',' + split_line[3] + ',' + split_line[4] + "," + status + "\n")
             current_index = current_index + 1
@@ -185,8 +190,11 @@ def issue () :
             else :
                 line_in_csv_of_issue_clicked = line_in_csv_of_issue_clicked + 1
 
+    #If the user has enetered a person's name
     if person != "%noneValue%" :
         add_person("data.csv", line_in_csv_of_issue_clicked, person)
+    else:
+        pass
 
 
     if issue_status != "%noneValue%" :
