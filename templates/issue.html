@@ -264,6 +264,9 @@
             <p class="issue_tags">{{ tags }}</p>
             <br>
             <br>
+            <p id="open_closed_status" class="note_item"></p>
+            <br>
+            <br>
             <br>
             <div class="issue_description">{{ desc }}</div>
             <br>
@@ -311,11 +314,14 @@ document.cookie = "issue_status=%noneValue%"
 
 if (status=="Close") {
     issue_status_button.innerHTML = "Open Issue"
+    open_closed_status.innerHTML = "(Closed)"
 } else {
+    open_closed_status.innerHTML = "(Open)"
     issue_status_button.innerHTML = "Close Issue"
 }
 
 issue_status_button = document.getElementById("issue_status_button").innerHTML
+open_closed_status = document.getElementById("open_closed_status").innerHTML
 
 
 function change_issue_status() {
