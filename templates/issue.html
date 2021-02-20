@@ -282,7 +282,7 @@
                 </div>
             </form>
             <br>
-            <img src="{{url_for('static', filename='back_button_img.png')}}" class="back_button_image" onclick="window.open('http://localhost:5000/', 'self')">
+            <img src="{{url_for('static', filename='back_button_img.png')}}" class="back_button_image" onclick="window.open('http://localhost:5000/', '_self')">
             </div>
             <div class="issue_settings">
                 <div id="people_container"></div>
@@ -294,12 +294,10 @@
                 </div>
                 <br>
                 <img src="{{url_for('static', filename='AssignPerson.png')}}" class="assign_button" onclick="assign_person()">
-                <!--<button onclick="assign_person()">Assign</button>-->
                 <br>
                 <br>
                 <img src="{{url_for('static', filename='OpenCloseIssue.png')}}" class="issue_status_button" onclick="change_issue_status()">
                 <p class="issue_status_text" id="issue_status_button"></p>
-                <!--<button id="issue_status_button" onclick="change_issue_status()"></button> -->
             </div>
         </div>   
 </body>

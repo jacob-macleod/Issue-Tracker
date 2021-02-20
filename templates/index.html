@@ -72,6 +72,7 @@ box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3), -1px -1px 2px rgba(185, 185, 1
 }
 
 .app_name {
+    cursor: pointer;
     position: absolute;
     width: 175px;
     height: 33.73px;
@@ -87,6 +88,7 @@ box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3), -1px -1px 2px rgba(185, 185, 1
 }
 
 .app_name_text {
+    cursor: pointer;
     top: 26px;
     text-align: right;
     padding-top: 10px;
@@ -127,7 +129,7 @@ box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3), -1px -1px 2px rgba(185, 185, 1
     <div class="grid-container">
         <div class="panel_items">
             <div class="app_name">
-                <div class="app_name_text">Issue Tracker</div>
+                <div class="app_name_text" onclick="window.open('http://localhost:5000/','_self')">Issue Tracker</div>
             </div> 
             <img src="{{url_for('static', filename='create_issue_img.png')}}" class="create_issue_image" onclick="window.open('http://localhost:5000/create_issue','_self')">
             <br>
@@ -145,6 +147,9 @@ box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3), -1px -1px 2px rgba(185, 185, 1
 </body>
 
 <script> 
+document.cookie = "person='%noneValue%'"
+document.cookie = "issue_status=%noneValue%"
+
 function create_cookie(data) {
     document.cookie = "issue='" + data + "'";
 }
